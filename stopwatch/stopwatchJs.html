@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Stopwatch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    #stopwatch {
+      font-size: 48px;
+      margin: 20px 0;
+      border: 2px solid black;
+      padding: 20px;
+      width: 200px;
+      display: inline-block;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Stopwatch</h1>
+  <div id="stopwatch">00:00:00</div>
+  <div class="buttons">
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+  </div>
+
+  <script>
+    let stopwatchInterval;
+    let elapsedTime = 0; // Time in seconds
+
+    const stopwatchElement = document.getElementById("stopwatch");
+    const startButton = document.getElementById("startBtn");
+    const stopButton = document.getElementById("stopBtn");
+
+    function formatTime(seconds) {
+      const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
+      const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+      const secs = String(seconds % 60).padStart(2, "0");
+      return `${hours}:${minutes}:${secs}`;
+    }
+
+    function startStopwatch() {
+      if (!stopwatchInterval) {
+        stopwatchInterval = setInterval(() => {
+          elapsedTime++;
+          stopwatchElement.textContent = formatTime(elapsedTime);
+        }, 1000);
+      }
+    }
+
+    function stopStopwatch() {
+      clearInterval(stopwatchInterval);
+      stopwatchInterval = null;
+    }
+
+    startButton.addEventListener("click", startStopwatch);
+    stopButton.addEventListener("click", stopStopwatch);
+  </script>
+</body>
+
+</html>
