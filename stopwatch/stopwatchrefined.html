@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Stopwatch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    #stopwatch {
+      font-size: 48px;
+      margin: 20px 0;
+      border: 2px solid black;
+      padding: 20px;
+      width: 200px;
+      display: inline-block;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Stopwatch</h1>
+  <div id="stopwatch">00:00:00</div>
+  <div class="buttons">
+    <button id="startBtn">Start</button>
+    <button id="pauseBtn">Pause</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+
+  <script>
+    let stopwatchInterval;
+    let elapsedTime = 0; // Time in seconds
+    let isPaused = false; // Tracks if the stopwatch is paused
+
+    const stopwatchElement = document.getElementById("stopwatch");
+    const startButton = document.getElementById("startBtn");
+    const pauseButton = document.getElementById("pauseBtn");
+    const resetButton = document.getElementById("resetBtn");
+
+    // Converts seconds into HH:MM:SS format
+    function formatTime(seconds) {
+      const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
+      const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+      const secs = String(seconds % 60).padStart(2, "0");
+      return `${hours}:${minutes}:${secs}`;
+    }
+
+    // Starts the stopwatch
+    function startStopwatch() {
+      if (!stopwatchInterval && !isPaused) {
+        stopwatchInterval = setInterval(() => {
+          elapsedTime++;
+          stopwatchElement.textContent = formatTime(elapsedTime);
+        }, 1000);
+      }
+      isPaused = false; // If paused, resume without resetting
+    }
+
+    // Pauses the stopwatch
+    function pauseStopwatch() {
+      if (stopwatchInterval) {
+        clearInterval(stopwatchInterval);
+        stopwatchInterval = null;
+        isPaused = true;
+      }
+    }
+
+    // Resets the stopwatch
+    function resetStopwatch() {
+      clearInterval(stopwatchInterval);
+      stopwatchInterval = null;
+      elapsedTime = 0; // Reset elapsed time
+      stopwatchElement.textContent = "00:00:00"; // Reset display
+      isPaused = false; // Reset pause state
+    }
+
+    // Event listeners for the buttons
+    startButton.addEventListener("click", startStopwatch);
+    pauseButton.addEventListener("click", pauseStopwatch);
+    resetButton.addEventListener("click", resetStopwatch);
+  </script>
+</body>
+
+</html>
